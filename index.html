@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="format-detection" content="telphone=no, email=no,address=no">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="world">
+        <header>我的收藏</header>
+        <section>
+            <div class="init">
+                <div class="left">特普朗会把世界带沟里吗?</div>
+                <div class="right">分享</div>
+                <div class="remove">取消收藏</div>
+            </div>
+            <div class="init">
+                <div class="left">特普朗会把世界吗?</div>
+                <div class="right">分享</div>
+                <div class="remove">取消收藏</div>
+            </div>
+            <div class="init">
+                <div class="left">特普界带沟里吗?</div>
+                <div class="right">分享</div>
+                <div class="remove">取消收藏</div>
+            </div>
+            <div class="init">
+                <div class="left">特会把世界带沟里吗?</div>
+                <div class="right">分享</div>
+                <div class="remove">取消收藏</div>
+            </div>
+        </section>
+        <footer></footer>
+    </div>
+    <script>
+        var init = document.querySelector(".init");
+
+        function Clear() {
+            this.section = document.querySelector("section");
+            this.init = this.section.children;
+            this.remove = document.querySelectorAll(".remove");
+            this.foring();
+            this.clicking();
+        };
+        Clear.prototype = {
+            constructor: Clear,
+            foring: function() {
+                for (var i = 0; i < this.init.length; i++) {
+
+                    this.addEvent(this.init[i], function(direction, init) {
+                        if (direction === "左") {
+                            init.style.marginLeft = "-160px";
+                        } else if (direction === "右") {
+                            init.style.marginLeft = 0 + "px";
+                        };
+                    });
+                };
+            },
+            addEvent: function(init, fn) {
+                var that = this;
+                var statrX, statrY, moveX, moveY;
+                //移动端点击事件;
+                init.addEventListener("touchstart", function(e) {
+                    //获取第一个手指;
+                    var touchs = e.touches[0];
+                    //获取开始坐标点;
+                    statrX = touchs.clientX;
+                    statrY = touchs.clientY;
+                    //console.log(statrX, statrY);
+                }, false);
+                //移动端移动事件;
+                init.addEventListener("touchmove", function(en) {
+                    //获取第一个手指;
+                    var touchs = en.touches[0];
+                    //获取移动坐标点;
+                    moveX = touchs.clientX;
+                    moveY = touchs.clientY;
+                    //console.log(moveX, moveY)
+                }, false);
+                //移动端抬起事件;
+                init.addEventListener("touchend", function() {
+                    //计算移动距离;
+                    var endX = moveX - statrX;
+                    var endY = moveY - statrY;
+                    //取绝对值;
+                    console.log(Math.abs(endX), Math.abs(endY));
+                    //判断移动距离;
+                    if (endX < -50 && Math.abs(endY) < 20) {
+                        //向左;
+                        console.log("左");
+                        fn("左", init);
+                    } else if (endX > 50 && Math.abs(endY) < 20) {
+                        //向右;
+                        console.log("右");
+                        fn("右", init);
+                    }
+                }, false);
+            },
+            clicking: function() {
+                var that = this;
+                for (var j = 0; j < this.remove.length; j++) {
+                    this.remove[j].onclick = function() {
+                        console.log(this.parentNode);
+                        console.log(that.section);
+                        that.section.removeChild(this.parentNode);
+                    };
+                };
+            }
+        };
+        new Clear();
+    </script>
+</body>
+
+</html>
